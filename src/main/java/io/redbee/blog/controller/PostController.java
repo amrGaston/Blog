@@ -1,7 +1,9 @@
 package io.redbee.blog.controller;
 
-/*
+
+import io.redbee.blog.models.Comentario;
 import io.redbee.blog.models.Post;
+import io.redbee.blog.services.ComentarioService;
 import io.redbee.blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,8 @@ import java.util.Optional;
 public class PostController {
 
     @Autowired
-    PostService postService;
+    private PostService postService;
+
 
     @GetMapping
     public ArrayList<Post> getPost(){
@@ -35,7 +38,10 @@ public class PostController {
     public String eliminarPost(@PathVariable("id") Long id){
         return (this.postService.eliminarPost(id)) ? "Post eliminado con id: " + id:" Post no encontrado con id: " + id;
     }
+
+    @PutMapping(path = "/{id}")
+    public String modificarPost(@PathVariable("id") Long id,@RequestBody Post post){
+        return (this.postService.modificarPost(id,post))? "Post modificado con id: " + id: "Post con id: " + id + " no encontrado";
+    }
+
 }
-
-
- */

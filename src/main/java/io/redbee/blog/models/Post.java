@@ -1,10 +1,13 @@
 package io.redbee.blog.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Date;
-/*
+import java.util.List;
+
 @Entity
 @Table(name="post")
 public class Post {
@@ -13,27 +16,31 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
     private Long id;
-    //@OneToMany(mappedBy = "post")
-    //private ArrayList<Comentario> comentarios;
+    @OneToMany(mappedBy = "post")
+    @JsonManagedReference
+    private List<Comentario> comentarios = new ArrayList<>();
 
+    /*
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+     */
     private Float compra;
     private Float venta;
-    private Date date;
+    private Date date = new Date();
 
+    /*
     public Post(){
-
     }
 
-    public Post(Long id, ArrayList<Comentario> comentarios, Float compra, Float venta, Date date) {
+    public Post(Long id, Float compra, Float venta, List<Comentario> comentarios) {
         this.id = id;
-        //this.comentarios = comentarios;
         this.compra = compra;
         this.venta = venta;
-        this.date = date;
+        this.comentarios = comentarios;
     }
+
+     */
 
     public Long getId() {
         return id;
@@ -67,17 +74,18 @@ public class Post {
         this.date = date;
     }
 
-    /*
-    public ArrayList<Comentario> getComentarios() {
+    public List<Comentario> getComentarios() {
         return comentarios;
     }
 
-    public void setComentarios(ArrayList<Comentario> comentarios) {
+    public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
+        for (Comentario comentario : comentarios){
+            comentario.setPost(this);
+        }
     }
 
-
-
+    public void agregarComentario(Comentario comentario){
+        this.comentarios.add(comentario);
+    }
 }
-
-*/

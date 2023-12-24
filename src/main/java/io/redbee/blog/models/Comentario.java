@@ -1,5 +1,7 @@
 package io.redbee.blog.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,19 +14,24 @@ public class Comentario {
     private Long id;
     private String texto;
 
-    //@ManyToOne(fetch = FetchType.EAGER)
-    //@JoinColumn(name = "post_id")
-    //private Post post;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "post_id")
+    //@JsonIgnore()
+    @JsonBackReference
+    private Post post;
 
+/*
     public Comentario(){
 
     }
 
-    public Comentario(Long id, String texto) {
+    public Comentario(Long id, String texto, Post post) {
         this.id = id;
         this.texto = texto;
+        this.post = post;
     }
 
+ */
 
     public String getTexto() {
         return texto;
@@ -42,4 +49,11 @@ public class Comentario {
         this.id = id;
     }
 
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
 }

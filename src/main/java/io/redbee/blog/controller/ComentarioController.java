@@ -2,6 +2,7 @@ package io.redbee.blog.controller;
 
 import io.redbee.blog.models.Comentario;
 import io.redbee.blog.services.ComentarioService;
+import io.redbee.blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,8 @@ public class ComentarioController {
     public String modificarComentario(@PathVariable("id") Long id,@RequestBody Comentario comentario){
         return (this.comentarioService.modificarComentario(id,comentario))? "Comentario modificado con id: " + id: "Comentario con id: " + id + " no encontrado";
     }
+
+
 
 
 

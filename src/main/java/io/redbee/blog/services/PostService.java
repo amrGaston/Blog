@@ -1,5 +1,6 @@
 package io.redbee.blog.services;
-/*
+
+import io.redbee.blog.models.Comentario;
 import io.redbee.blog.models.Post;
 import io.redbee.blog.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +24,43 @@ public class PostService {
     }
 
     public boolean eliminarPost(Long id) {
-        try {
+        Boolean encontrado = postRepository.findById(id).isPresent();
+        if (encontrado) {
             postRepository.deleteById(id);
-            return true;
-        }catch (Exception err){
-            return false;
         }
-
+        return encontrado;
     }
 
     public Optional<Post> getPostPorId(Long id) {
         return postRepository.findById(id);
     }
 
+    public boolean modificarPost(Long id, Post post) {
+       Optional<Post> postActual = postRepository.findById(id);
+       Boolean actualizado = false;
+       if (postActual.isPresent()){
+           Post postAGuardar = postActual.get();
+           postAGuardar.setCompra(post.getCompra());
+           postAGuardar.setVenta(post.getVenta());
+           postAGuardar.setDate(post.getDate());
+           postAGuardar.setComentarios(post.getComentarios());
+           postRepository.save(postAGuardar);
+           actualizado = true;
+       }
+       return actualizado;
+    }
+
+
+    public boolean agregarComentario(Long id, Comentario comentario) {
+        Optional<Post> postActual = postRepository.findById(id);
+        Boolean actualizado = false;
+        if (postActual.isPresent()){
+            Post postAGuardar = postActual.get();
+            comentario.setPost(postAGuardar);
+            postAGuardar.agregarComentario(comentario);
+            postRepository.save(postAGuardar);
+            actualizado = true;
+        }
+        return actualizado;
+    }
 }
-*/

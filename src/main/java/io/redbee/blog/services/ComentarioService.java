@@ -1,7 +1,9 @@
 package io.redbee.blog.services;
 
 import io.redbee.blog.models.Comentario;
+import io.redbee.blog.models.Post;
 import io.redbee.blog.repository.ComentarioRepository;
+import io.redbee.blog.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ public class ComentarioService {
 
     @Autowired
     private ComentarioRepository comentarioRepository;
+    @Autowired
+    private PostRepository postRepository;
 
     public ArrayList<Comentario> getComentarios(){
         return (ArrayList<Comentario>) this.comentarioRepository.findAll();
@@ -23,7 +27,16 @@ public class ComentarioService {
     }
 
     public Comentario guardarComentario(Comentario comentario){
-        return this.comentarioRepository.save(comentario);
+        Optional<Post> postOptional = postRepository.findById(comentario.getPost().getId());
+
+        Comentario comentarioGuardado = null;
+        if (postOptional.isPresent()){
+            System.out.println("POST.................: " + postOptional.get().getId() );
+            comentario.setPost(postOptional.get());
+            comentarioGuardado = this.comentarioRepository.save(comentario);
+        }
+
+        return comentarioGuardado;
     }
 
     public Boolean deleteComentario(Long id){
