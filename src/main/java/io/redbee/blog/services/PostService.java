@@ -2,11 +2,14 @@ package io.redbee.blog.services;
 
 import io.redbee.blog.models.Comentario;
 import io.redbee.blog.models.Post;
+import io.redbee.blog.models.Usuario;
 import io.redbee.blog.repository.PostRepository;
+import io.redbee.blog.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,13 +17,22 @@ public class PostService {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    public ArrayList<Post> getPost(){
-        return (ArrayList<Post>) postRepository.findAll();
+
+    public List<Iterable<Post>> getPost(){
+        return Arrays.asList(postRepository.findAll());
     }
 
     public Post guardarPost(Post post){
-        return postRepository.save(post);
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(post.getUsuario().getId());
+        Post postGuardado = null;
+        if (usuarioOptional.isPresent()){
+            post.setUsuario(usuarioOptional.get());
+            postGuardado = this.postRepository.save(post);
+        }
+        return postGuardado;
     }
 
     public boolean eliminarPost(Long id) {

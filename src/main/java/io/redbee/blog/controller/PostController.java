@@ -1,14 +1,12 @@
 package io.redbee.blog.controller;
 
 
-import io.redbee.blog.models.Comentario;
 import io.redbee.blog.models.Post;
-import io.redbee.blog.services.ComentarioService;
 import io.redbee.blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,7 +18,7 @@ public class PostController {
 
 
     @GetMapping
-    public ArrayList<Post> getPost(){
+    public List<Iterable<Post>> getPost(){
         return this.postService.getPost();
     }
 

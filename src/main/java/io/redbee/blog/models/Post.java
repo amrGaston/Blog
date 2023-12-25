@@ -1,12 +1,11 @@
 package io.redbee.blog.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name="post")
@@ -16,15 +15,16 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
     private Long id;
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Comentario> comentarios = new ArrayList<>();
 
-    /*
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
+    @JsonBackReference
     private Usuario usuario;
-     */
+
     private Float compra;
     private Float venta;
     private Date date = new Date();
@@ -87,5 +87,13 @@ public class Post {
 
     public void agregarComentario(Comentario comentario){
         this.comentarios.add(comentario);
+    }
+
+    public void setUsuario(Usuario usuario){
+        this.usuario = usuario;
+    }
+
+    public Usuario getUsuario(){
+        return this.usuario;
     }
 }

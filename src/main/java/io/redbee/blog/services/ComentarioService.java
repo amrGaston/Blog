@@ -7,8 +7,7 @@ import io.redbee.blog.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ComentarioService {
@@ -18,8 +17,8 @@ public class ComentarioService {
     @Autowired
     private PostRepository postRepository;
 
-    public ArrayList<Comentario> getComentarios(){
-        return (ArrayList<Comentario>) this.comentarioRepository.findAll();
+    public List<Iterable<Comentario>> getComentarios(){
+        return Arrays.asList(this.comentarioRepository.findAll());
     }
 
     public Optional<Comentario> getComentarioPorId(Long id){
@@ -31,7 +30,6 @@ public class ComentarioService {
 
         Comentario comentarioGuardado = null;
         if (postOptional.isPresent()){
-            System.out.println("POST.................: " + postOptional.get().getId() );
             comentario.setPost(postOptional.get());
             comentarioGuardado = this.comentarioRepository.save(comentario);
         }

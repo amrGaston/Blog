@@ -6,8 +6,10 @@ import io.redbee.blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/comentario")
@@ -16,7 +18,7 @@ public class ComentarioController {
     private ComentarioService comentarioService;
 
     @GetMapping
-    public ArrayList<Comentario> getComentarios(){
+    public List<Iterable<Comentario>> getComentarios(){
         return this.comentarioService.getComentarios();
     }
 

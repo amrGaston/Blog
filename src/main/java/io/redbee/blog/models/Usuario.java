@@ -1,9 +1,13 @@
 package io.redbee.blog.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-/*
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name="usuario")
 public class Usuario {
@@ -14,9 +18,11 @@ public class Usuario {
     private Long id;
     private String nombre;
     private String correo;
-    @OneToMany(mappedBy = "usuario")
-    private ArrayList<Post> posteos;
+    @OneToMany(mappedBy = "usuario",  cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Post> posteos = new ArrayList<>();
 
+    /*
     public Usuario(){
 
     }
@@ -27,6 +33,8 @@ public class Usuario {
         this.correo = correo;
         this.posteos = posteos;
     }
+
+     */
 
     public Long getId() {
         return id;
@@ -52,14 +60,14 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public ArrayList<Post> getPosteos() {
+    public List<Post> getPosteos() {
         return posteos;
     }
 
-    public void setPosteos(ArrayList<Post> posteos) {
+    public void setPosteos(List<Post> posteos) {
         this.posteos = posteos;
+        for (Post post: posteos){
+            post.setUsuario(this);
+        }
     }
 }
-
-
- */
